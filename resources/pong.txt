@@ -1,0 +1,36 @@
+canvas 50 20 600 600
+shape pingpongtable rectangle
+motion pingpongtable 0 100 300 500 50 0 255 0 0 100 300 500 50 0 255 0
+motion pingpongtable 0 100 300 500 50 0 255 0 19 100 300 500 50 0 255 0
+
+shape net rectangle
+motion net 0 350 300 10 50 0 0 0 0 350 300 10 50 0 0 0
+motion net 0 350 300 10 50 0 0 0 19 350 300 10 50 0 0 0
+
+shape paddle1Top ellipse
+motion paddle1Top 0 100 250 20 40 0 0 255 0 100 250 20 40 0 0 255
+motion paddle1Top 0 100 250 20 40 0 0 255 10 80 260 20 40 0 0 255
+motion paddle1Top 10 80 260 20 40 0 0 255 19 100 250 20 40 0 0 255
+
+shape paddle1Bottom rectangle
+motion paddle1Bottom 0 107 287 5 20 0 0 0 0 107 287 5 20 0 0 0
+motion paddle1Bottom 0 107 287 5 20 0 0 0 10 87 297 5 20 0 0 0
+motion paddle1Bottom 10 87 297 5 20 0 0 0 19 107 287 5 20 0 0 0
+
+shape paddle2Top ellipse
+motion paddle2Top 0 610 260 20 40 255 0 0 0 610 260 20 40 255 0 0
+motion paddle2Top 0 610 260 20 40 255 0 0 13 590 250 20 40 255 0 0
+motion paddle2Top 13 590 250 20 40 255 0 0 19 610 260 20 40 255 0 0
+
+shape paddle2Bottom rectangle
+motion paddle2Bottom 0 617 297 5 20 0 0 0 0 617 297 5 20 0 0 0
+motion paddle2Bottom 0 617 297 5 20 0 0 0 13 597 287 5 20 0 0 0
+motion paddle2Bottom 13 597 287 5 20 0 0 0 19 617 297 5 20 0 0 0
+
+shape ball ellipse
+motion ball 0 110 250 10 10 255 200 0 0 110 250 10 10 255 200 0
+motion ball 0 110 250 10 10 255 200 0 5 500 320 10 10 255 200 0
+motion ball 5 500 320 10 10 255 200 0 13 590 250 10 10 255 200 0
+motion ball 13 590 250 10 10 255 200 0 17 200 320 10 10 255 200 0
+motion ball 17 200 320 10 10 255 200 0 19 110 250 10 10 255 200 0
+

@@ -1,0 +1,163 @@
+Anna Beck and Jonah Stadtmauer - README
+
+**Easy Animator / Excellence**
+
+Assignment 5:
+
+To complete this assignment, we created a model package that contains a shape package, an Animator Model and an
+Interface for the Animator Model. We started by creating the shape package, which contains a IShape interface, Shape,
+an abstract Shape class and the child classes, Ellipse, Rectangle and Triangle, which are representations of the
+shapes in the model at the moment. Allowing child Shape classes to extend the abstract Shape class will permit
+easy implementation of new Shapes to our cs3500.animator.model in the future.
+
+Each Shape has an id, a center point, which we are currently using to represent a shape's position in the animation,
+a width, height, opacity, color and rotation. In the shape class, we define certain shape states, otherwise known as
+transitions that a Shape can go through. Currently, we have implemented transitions that allow shapes to move from one
+Point to another by directly indicating the new position, translating to another point, specifying an amount for each
+the x and the y to move by, allowing shapes to resize their width and height, by directly changing both aspects,
+scaling both of the aspects by one factor, or by scaling the width and the height by their own factors. We have also
+implemented transitions to change the opacity of the given shape, change the color of the given shape and to rotate the
+shape. Each child class that extends the shape class has its own constructor, create function, draw function (to be
+implemented when the view is created), equals function and toString function, to represent that type of shape.
+
+Some challenges we faced when creating the Shape class was the choice of using an enum or representing each
+individual shape in their own class. We decided to represent shapes in their own classes, as they each have
+their own characteristics and we know it will be easier to work with the view by using this method.
+
+For the rest of the assignment, we needed to carefully consider our data design because what we choose to do in this
+part will either make the future parts easier, or more complex. We ultimately decided to represent the Animation in
+terms of key frames. We made this choice because at any given frame (tick) of the animation, this method will allow us
+to be able to obtain all of the data for that frame. In our Animator class, we have functions that get the current
+frame, get the next frame and getting the previous frame. We are able to add and remove frames as well as removing
+shapes from the animation. We have also implemented a layering feature, where users can decide which shapes
+should be on top of each other, or below each other, by bringing them to the front or to the back of the Animation.
+We also have a function called interpolate, which is partially implemented and will be needed for future parts
+of this assignment. This function allows for a key frame in between two states to be returned, which is very important.
+
+
+Assignment 6:
+
+Changes!
+-Fixed toString in AnimatorModel
+-Refactored model to avoid requiring client to pass in complex types (addKeyFrame)
+  -> replaced with addEllipse, addRectangle, etc.
+-Removed functionality in Shapes to move, translate, etc. We found this functionality was never actually needed.
+-Made Shape concrete instead of abstract, replaced concrete impls with enum ShapeType field.
+  -> the enum is used in shapes and in the model to determine a shape's type
+-Removed id field from shapes, as only the model needs to be able to apply a specific identifier to a shape.
+-Made all attributes of shapes primitives. The complex types were too complex and a hassle.
+
+New Functionality in view!
+- For this assignment, we implemented the three types of views.
+  -> We started by doing the textual view, where we printed the textual representation of the animation by creating
+    a utils class called AnimationStatePrinter, that prints out the textual representation.
+    -> This view was the easiest to create, as it is similar to the toString() method in our model.
+  -> To implement the visual view, we used a controller to parse the model so we could represent the view visually.
+     -> This view operated by using a Drawing Panel, which consisted of classes to represent drawing panel shape,
+        drawing panel rectangle and drawing panel ellipse, to draw each shape. This view used the controller, which
+        we implemented using the command pattern.
+     -> The visual view uses many methods that are in the View interface that the other views do not since this
+        view is actually displaying an animation that moves.
+  -> To implement SVG view, we carefully considered the formatting of the textual output. This was tedious and took a
+     lot of time, but in the end we got it to work. A challenge we faced with this part of the assignment was getting
+     the entire animation to render in SVG format.
+     -> This view was definitely the hardest one to implement, it just produces an SVG textual output but the
+        formatting was tricky.
+- The views each used ReadOnlyAnimatorModels, so we did not mutate the actual model.
+- The view was abstracted and extended by SVG and Visual View. This was to remove duplicate code, as there were
+  some methods that were the same for both of these views. Multiple OperationNotSupportedExceptions were thrown for
+  these two views, as the visual view used some public methods that were not supported in the textual and SVG views.
+- We added additional functionality to our view class, called trailing. We have methods to set the trailing option true
+  or false. This feature allows for the shapes to be continuously appearing on top of each other, making it seem like
+  the shapes are leaving a trail. This is different than the normal feature of the shapes moving. While the shapes
+  are still moving in the trailing feature, they are leaving a continuous trail of overlays. This feature can be
+  used to create an animation of a shooting star, or writing out letters when you dont want the previous states
+  to disappear.
+
+- We created a ViewFactory class that is used in the main class. This class specifies the type of view
+  and the textual string they represent.
+- In the main class, Excellence, we parse through the command line arguments that allow a user to display
+  an animation. This class consists of multiple static methods that parse each type of command line arguments,
+  the "in", "out" and "speed" arguments are each parsed through the static methods. The "view" argument
+  used the factory class.
+  -> Our main class allows for the user to type in the arguments in any order that they choose to, and ensures
+     that the required arguments are entered.
+
+- Our controller uses the command pattern. We have an interface with different controllers for each type of view.
+- There is a command package in the controller class, that allows for the Ellipse and Rectangle to be executed.
+- The controller has a start method, which essentially means "go", that runs the controller. The view uses the
+  controller to run.
+
+- Some challenges we faced on this assignment were:
+  -> SVG view rendering: This was difficult to do because we had to spend a lot of time to make sure all of the
+     formatting was done correctly. We were facing issues where the SVG view rendering was getting cut off at the
+     end because we weren't flushing the buffer.
+  -> Creating the Main class, Excellence was difficult. We spent a lot of time on the design of this class and
+     it was difficult using the Model-View-Controller Method to get this working properly. We underestimated the
+     amount of time that creating this class would take us.
+
+
+
+
+
+Assignment 7:
+
+-Created the interactive (GUI) view and respective controller
+  -> updated ViewFactory and ControllerFactory to support new view type
+  -> added reset() method to IAnimatorModel, to enable restart functionality in interactive controller
+  -> implemented subscriber / receiver pattern in the interactive view + controller setup
+-removed unused constructors in VisualAnimationView
+-changed AnimationStatePrinter:
+  ->no longer outputs trailing zeroes
+  ->no longer outputs pipe | in middle of motions
+  ->brings it in line with expected format of the AnimationReader
+-updated views to use JScrollPane instead of ScrollPane
+-created classes for generating custom animations (Snowman and Ping pong)
+
+
+
+****Extra Credit:****
+
+Level 1 Implementation:
+- Outline v. Fill Mode
+  - Added a button to toggle between modes in the interactive view
+  - Added outlineToggled in IViewEventListener and had drawing panel implement IViewEventListener
+    so it would know whether to fill or outline the shape
+
+- Plus Sign:
+  - added command to knownCommands in interactive and visual controllers for PLUS
+  - added Plus shape to ShapeType Enum and added a test class for the IModelShape of a plus sign
+  - added plus shape to drawing panel, DrawingPanelPlus (extending Polygon), which figures out the coordinates
+    of the points of the plus sign
+  - added a drawPlus method in the view, essentially following same design setup as the other two shapes
+  - DrawPlus command class added that extends DrawCommand in the controller.
+
+- SVG View to implement Plus:
+  - Abstracted original SVG view logic for printing the state into separate SVG classes for each type of shape.
+  - This includes a new SVG Plus class that renders the SVG shape for polygons
+
+- No modifications necessary to AnimationReader for the Plus shape.
+
+- Animations we will demo in our interactive view: the big-bang modified to be plus signs (plus), and our ping pong animation (outline).
+- SVG we will demo: rainbow-plus.svg
+
+
+Level 2 Implementation:
+- Implemented the ability to start, pause, resume and stop the discrete playing of an animation.
+- Added ability to switch between discrete and continuous playing of an animation without having to
+  restart the program or reload the animation.
+- Retained all existing abilities of your interactive view.
+
+- View changes:
+  - Interactive View: added a button to toggle between discrete and continuous mode
+  - added discreteToggled() in IViewEventListener
+
+- Model changes:
+  - Added method getNextKeyFrame() to facilitate discrete mode
+  - modified hasNextFrame() to account for this^
+
+- Controller changes:
+  - interactive controller implements discreteToggled() from IViewEventListener, so knows whether discrete mode is enabled
+  - controller calls getNextKeyFrame if discrete mode is enabled
+
+- Animations we will demo in the interactive view: rainbow-plus.txt
